@@ -26,17 +26,27 @@ def getHeadersDataFrame(df):
 
   return categories, subcategories
 
+
+def getLabels(data):
+  ulabels = set()
+  session_labels = data["session.label"].tolist()
+  for label in session_labels:
+    if str(label) != "nan":
+      ulabels.add(label)
+  return ulabels
+
 def getRelevantData(path, cols):
   #Read the data
   data = pa.read_csv(path)
-  print(getHeadersDataFrame(data))
-    
+  print(getLabels(data))
   #Get the time and create
   now = dt.datetime.now()
   strnow = str(now.strftime("%Y-%m-%d"))
   nameExportFile = "./clean/clean_data_{}.{}".format(strnow,"csv")
   
   #Filter the data
+  
+  
   #data = data[ data["session.code"] == codeSession ] 
   data = data.iloc[:,cols]
 
