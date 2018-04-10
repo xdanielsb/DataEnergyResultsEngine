@@ -11,13 +11,20 @@ def readRelevantColumns():
 
 def getHeadersDataFrame(df):
   headers = list(df)
-  columns = set()
+  categories = set()
+  subcategories = {}
+  
   for header in headers:
+      print(header)
       aux = header.split(".")
-      if (len(aux) > 0):
-          columns.add(aux[0])
+      if (len(aux) > 1):
+          categories.add(aux[0])
+          if aux[0] in subcategories:
+            subcategories[aux[0]].append(header[len(aux[0]):]) 
+          else:
+            subcategories[aux[0]] = []
 
-  return columns
+  return categories, subcategories
 
 def getRelevantData(path, cols):
   #Read the data
