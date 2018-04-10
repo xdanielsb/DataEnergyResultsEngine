@@ -13,11 +13,11 @@ app.config['SECRET_KEY'] = 'mys3cr31'
 @app.route('/')
 def browser ():
     try:
-        return render_template('browser.html')
+        return render_template('index.html')
     except Exception as e:
         return render_template('500.html',error=e)
 
 
 if __name__ =="__main__":
     print(__doc__)
-    app.run(host="0.0.0.0", threaded=True)
+    app.run(host="0.0.0.0", threaded=True, debug=True)
