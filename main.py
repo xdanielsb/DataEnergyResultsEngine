@@ -9,7 +9,7 @@ import os
 from flask import Flask, render_template, request, redirect, url_for
 from werkzeug.utils import secure_filename
 
-UPLOAD_FOLDER = '/data/'
+UPLOAD_FOLDER = './data/'
 ALLOWED_EXTENSIONS = set(['csv'])
 
 app = Flask(__name__)
@@ -21,28 +21,23 @@ def allowed_file(filename):
   return '.' in filename and \
   filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def browser ():
     try:
       if request.method == 'POST':
-        # check if the post request has the file part
         if 'file' not in request.files:
-          return redirect(request.url)
+          return render_template('index.html')
         file = request.files['file']
-        # if user does not select file, browser also
-        # submit a empty part without filename
         if file.filename == '':
-          return redirect(request.url)
-        if file and allowed_file(file.filename):
+          return render_template('index.html')
+        if file:# and allowed_file(file.filename):
           filename = secure_filename(file.filename)
-          file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-          return redirect(url_for('uploaded_file',
-                                    filename=filename))  
+          npath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+          file.save(npath)
       return render_template('index.html')
     except Exception as e:
       return render_template('500.html',error=e)
 
-
 if __name__ =="__main__":
     print(__doc__)
-    app.run(host="0.0.0.0", threaded=True, debug=True)
+    app.run( threaded=True, debug=True)
