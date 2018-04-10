@@ -32,11 +32,10 @@ def browser ():
           return render_template('index.html')
         if file:# and allowed_file(file.filename):
           filename = secure_filename(file.filename)
-          print(filename)
           npath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-          print(npath)
           file.save(npath)
-      return render_template('index.html')
+          return render_template('results.html', name_file=npath)
+        return render_template('index.html')
     except Exception as e:
       return render_template('500.html',error=e)
 
