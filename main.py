@@ -60,6 +60,7 @@ def browser ():
 @app.route('/results/<labelid>')
 def results(labelid):
   global PATH_FILE
+  
   try:
     PATH_FILE = "./data/data.csv"
     if(len(labelid) == 0 ):
@@ -67,7 +68,8 @@ def results(labelid):
     else: 
       headers, values = getSpecificData(PATH_FILE, labelid)
       h, v  = getSessionInfo(PATH_FILE, labelid)
-      return render_template('results.html', headers=headers, values=values, header_session=h, values_session=v)
+      data_session = zip(h,v)
+      return render_template('results.html', headers=headers, values=values, data_session=data_session)
   except Exception as e:
     print(e)
     return render_template("500.html", error=e)
