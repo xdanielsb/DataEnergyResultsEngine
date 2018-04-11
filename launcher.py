@@ -27,12 +27,28 @@ def getHeadersDataFrame(df):
   return categories, subcategories
 
 
+def labelParser(label):
+  year, month, day = label[:2], label[2:4], label[4:6]
+  hour, minu = label[6:8], label[8:10]
+  ttype = label[10:12]
+  if ttype == "DT":
+      ttype = "DTI"
+      #label = label[1:]
+  id =  label[12:14]
+  num_participants = label[14:16]
+  date = "year = 20{},  month = {}, day = {}, hour ={}, min = {} ".format(year, month, day, hour, minu)
+  info = "type = {}, id, num_participants = {}".format(ttype, num_participants)
+  return date, info
+
+
 def getLabels(data):
   ulabels = set()
   session_labels = data["session.label"].tolist()
   for label in session_labels:
     if str(label) != "nan":
       ulabels.add(label)
+  for label in ulabels:
+      print(labelParser(label))
   return ulabels
 
 def getRelevantData(path, cols):
