@@ -8,12 +8,14 @@
 </head>
 <body>
 {% if name_file %}
- The name of the file is  {{ name_file }}
+ <h2> File :  </h2> 
+     {{ name_file }}
 {% endif %}
 
+<h2> Experiments in the database :</h2>
 {% if headers %}
- {% for header in headers %}
-    {{header}},
+ {% for info, desc in headers %}
+    {{info}}, {{desc}} <br>
  {% endfor %}
 {% endif %}
 

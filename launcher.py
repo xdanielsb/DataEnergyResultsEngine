@@ -4,6 +4,24 @@ import datetime as dt
 
 #Execute with python3
 
+MONTHS =  {1: "January", 
+           2: "February", 
+           3: "March", 
+           4: "April", 
+           5: "May" , 
+           6: "June",
+           7: "July",
+           8: "August",
+           9: "September",
+           10: "October", 
+           11: "November", 
+           12: "December"}
+
+TYPES = {"D": "Descriptive (D)",
+         "C": "Control (C)", 
+         "DTI": "Descriptive Tailored Injuctive (DTI) "}
+
+
 def readRelevantColumns():
   aux = open("./assets/relevant_cols", "r").read().split("\n")[:-1]
   cols  = [int(y) for y in aux]
@@ -36,32 +54,35 @@ def labelParser(label):
       label = label[2:]
   idx =  label[11:13]
   num_participants = label[13:16]
-  date = "year = 20{},  month = {}, day = {}, hour ={}, min = {} ".format(year, month, day, hour, minu)
-  info = "type = {}, id = {}, num_participants = {}".format(ttype, idx,  num_participants)
-  return date, info
-
+  month = MONTHS[int(month)]  
+  ttype = TYPES[ttype]
+  date = "20{} - {} - {} at {}:{} ".format(year, month, day, hour, minu)
+  info = "type = {}, group = {}, # participants = {}".format(ttype, idx,  num_participants)
+  return [date, info]
 
 def getLabels(data):
   ulabels = set()
+  flabels = []
   session_labels = data["session.label"].tolist()
   for label in session_labels:
     if str(label) != "nan":
       ulabels.add(label)
   for label in ulabels:
-      print(labelParser(label))
-  return ulabels
+      flabels.append(labelParser(label))
+  return flabels
 
 def getRelevantData(path, cols):
   #Read the data
   data = pa.read_csv(path)
-  print(getLabels(data))
+  flabels = getLabels(data)
+  for a,b in flabels:
+    print(a, b)
   #Get the time and create
   now = dt.datetime.now()
   strnow = str(now.strftime("%Y-%m-%d"))
   nameExportFile = "./clean/clean_data_{}.{}".format(strnow,"csv")
   
   #Filter the data
-  
   
   #data = data[ data["session.code"] == codeSession ] 
   data = data.iloc[:,cols]
@@ -76,6 +97,3 @@ if __name__  == "__main__":
     path = "data/data.csv"
     cols =   readRelevantColumns()
     getRelevantData(path , cols)
-    
-
-    

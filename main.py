@@ -12,6 +12,8 @@ import datetime as dt
 from flask import Flask, render_template, request, redirect, url_for
 from werkzeug.utils import secure_filename
 
+from launcher import getLabels
+
 UPLOAD_FOLDER = './data/'
 ALLOWED_EXTENSIONS = set(['csv'])
 
@@ -22,15 +24,6 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 def allowed_file(filename):
   return '.' in filename and \
   filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-def getHeadersDataFrame(df):
-  return list(df)
-
-def getRelevantData(path):
-  #Read the data
-  data = pa.read_csv(path)
-  li = getHeadersDataFrame(data)
-  return  data, li
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -57,8 +50,9 @@ def browser ():
 def results():
   try:
     npath = "./data/data.csv"
-    data, headers = getRelevantData(npath)
-    return render_template('results.html', name_file=npath, headers=headers)
+    data = pa.read_csv(npath)
+    infoExperiments = getLabels(data)
+    return render_template('results.html', name_file=npath, headers=infoExperiments)
   except Exception as e:
     return render_template("500.html", error=e)
 
