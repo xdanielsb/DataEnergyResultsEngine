@@ -61,13 +61,13 @@
         </thead>
         <tbody>
           {% if headers %}
-            {% for info, type, players, group in headers %}
+            {% for info, type, players, group, label in headers %}
             <tr>
               <td> {{info}} </td>
               <td> {{type}} </td>
               <td> {{players}} </td>
               <td> {{group}} </td>
-              <td> <a href="/detail/">Click me </a></td>
+              <td> <a href="/results/{{label}}">Click me </a></td>
             </tr>
             {% endfor %}  
           {% endif %}

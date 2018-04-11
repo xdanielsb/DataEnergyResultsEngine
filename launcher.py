@@ -46,6 +46,7 @@ def getHeadersDataFrame(df):
 
 
 def labelParser(label):
+  reallabel = label
   year, month, day = label[:2], label[2:4], label[4:6]
   hour, minu = label[6:8], label[8:10]
   ttype = label[10:11]
@@ -57,7 +58,7 @@ def labelParser(label):
   month = MONTHS[int(month)]  
   ttype = TYPES[ttype]
   date = "20{}-{}-{} at {}:{} ".format(year, month, day, hour, minu)
-  return [date, ttype, num_participants, idx]
+  return [date, ttype, num_participants, idx, reallabel]
 
 def getLabels(data):
   ulabels = set()

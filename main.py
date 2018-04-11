@@ -21,6 +21,9 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'mys3cr31'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+PATH_FILE = ""
+
+
 def allowed_file(filename):
   return '.' in filename and \
   filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -28,6 +31,7 @@ def allowed_file(filename):
 
 @app.route('/', methods=['GET', 'POST'])
 def browser ():
+  global PATH_FILE
   try:
     if request.method == 'POST':
       print(request.files)
@@ -40,20 +44,28 @@ def browser ():
         filename = secure_filename(file.filename)
         npath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(npath)
+        PATH_FILE = npath
         data = pa.read_csv(npath)
         infoExperiments = getLabels(data)
         return render_template('index.html', name_file=npath, headers=infoExperiments)
+      #for testing purposes 
+      """
+        put the code here to test with a default file
+      """
     return render_template('index.html')
   except Exception as e:
     return render_template('500.html',error=e)
 
-@app.route('/results/')
-def results():
+@app.route('/results/<labelid>')
+def results(labelid):
+  global PATH_FILE
   try:
-    npath = "./data/data.csv"
-    data = pa.read_csv(npath)
-    infoExperiments = getLabels(data)
-    return render_template('index.html', name_file=npath, headers=infoExperiments)
+    #npath = "./data/data.csv"
+    if(len(labelid) == 0 ):
+      return render_template('results.html', path=PATH_FILE)
+    else: 
+      
+      return render_template('results.html', path=PATH_FILE)
   except Exception as e:
     return render_template("500.html", error=e)
 
