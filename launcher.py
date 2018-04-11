@@ -56,9 +56,8 @@ def labelParser(label):
   num_participants = label[13:16]
   month = MONTHS[int(month)]  
   ttype = TYPES[ttype]
-  date = "20{} - {} - {} at {}:{} ".format(year, month, day, hour, minu)
-  info = "type = {}, group = {}, # participants = {}".format(ttype, idx,  num_participants)
-  return [date, info]
+  date = "20{}-{}-{} at {}:{} ".format(year, month, day, hour, minu)
+  return [date, ttype, num_participants, idx]
 
 def getLabels(data):
   ulabels = set()
@@ -75,8 +74,6 @@ def getRelevantData(path, cols):
   #Read the data
   data = pa.read_csv(path)
   flabels = getLabels(data)
-  for a,b in flabels:
-    print(a, b)
   #Get the time and create
   now = dt.datetime.now()
   strnow = str(now.strftime("%Y-%m-%d"))

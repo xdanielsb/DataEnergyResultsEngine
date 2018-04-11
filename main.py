@@ -58,4 +58,4 @@ def results():
 
 if __name__ =="__main__":
     print(__doc__)
-    app.run( threaded=True, debug=True)
+    app.run(debug=True)

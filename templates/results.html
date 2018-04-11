@@ -4,21 +4,53 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+  
   <title>Document</title>
 </head>
 <body>
-{% if name_file %}
- <h2> File :  </h2> 
-     {{ name_file }}
-{% endif %}
+<div class="container-fluid">
+  <br>
+  {% if name_file %}
+    <p> <b> File :  </b> {{ name_file }}</p> 
+  {% endif %}
+  <p> <b> Experiments in the database: </b> </p> 
 
-<h2> Experiments in the database :</h2>
-{% if headers %}
- {% for info, desc in headers %}
-    {{info}}, {{desc}} <br>
- {% endfor %}
-{% endif %}
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th> Date Experiment </th>
+          <th> Type </th>
+          <th> #Players </th>
+          <th> #Group </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if headers %}
+          {% for info, type, players, group in headers %}
+          <tr>
+            <td> {{info}} </td>
+            <td> {{type}} </td>
+            <td> {{players}} </td>
+            <td> {{group}} </td>
+          </tr>
+          {% endfor %}  
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+  
+ 
+    
+     
+  
+  
+</div>
 
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 
 </body>
 </html>
