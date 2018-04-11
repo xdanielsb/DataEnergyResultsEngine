@@ -30,14 +30,14 @@ def getHeadersDataFrame(df):
 def labelParser(label):
   year, month, day = label[:2], label[2:4], label[4:6]
   hour, minu = label[6:8], label[8:10]
-  ttype = label[10:12]
-  if ttype == "DT":
+  ttype = label[10:11]
+  if ttype == "D" and label[11] == "T":
       ttype = "DTI"
-      #label = label[1:]
-  id =  label[12:14]
-  num_participants = label[14:16]
+      label = label[2:]
+  idx =  label[11:13]
+  num_participants = label[13:16]
   date = "year = 20{},  month = {}, day = {}, hour ={}, min = {} ".format(year, month, day, hour, minu)
-  info = "type = {}, id, num_participants = {}".format(ttype, num_participants)
+  info = "type = {}, id = {}, num_participants = {}".format(ttype, idx,  num_participants)
   return date, info
 
 
