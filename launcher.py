@@ -21,11 +21,12 @@ TYPES = {"D": "Descriptive (D)",
          "C": "Control (C)", 
          "DTI": "Descriptive Tailored Injuctive (DTI) "}
 
-
 def readRelevantColumns():
   aux = open("./assets/relevant_cols", "r").read().split("\n")[:-1]
   cols  = [int(y) for y in aux]
   return cols
+
+COLS =   readRelevantColumns()
 
 def getHeadersDataFrame(df):
   headers = list(df)
@@ -33,7 +34,6 @@ def getHeadersDataFrame(df):
   subcategories = {}
   
   for header in headers:
-      print(header)
       aux = header.split(".")
       if (len(aux) > 1):
           categories.add(aux[0])
@@ -71,7 +71,15 @@ def getLabels(data):
       flabels.append(labelParser(label))
   return flabels
 
-def getRelevantData(path, cols):
+def getSpecificData(path, labelid):
+  data = pa.read_csv(path)
+  data = data[ data["session.label"] == labelid ]
+  data = data.iloc[:,COLS]
+  headers = list(data)
+  values = data.values.tolist()
+  return headers, values
+
+def getRelevantData(path):
   #Read the data
   data = pa.read_csv(path)
   flabels = getLabels(data)
@@ -83,7 +91,7 @@ def getRelevantData(path, cols):
   #Filter the data
   
   #data = data[ data["session.code"] == codeSession ] 
-  data = data.iloc[:,cols]
+  data = data.iloc[:,COLS]
 
   data.to_csv(nameExportFile)
 
@@ -91,7 +99,24 @@ def getRelevantData(path, cols):
   print( "This file contains the clean data")
 
 
+def getSessionInfo(path, labelid):
+  data = pa.read_csv(path)
+  data = data[ data["session.label"] == labelid ] 
+  _, subcategories = getHeadersDataFrame(data)
+  aim = "session"
+  headers_session = []
+  values_session = []
+  for sub in subcategories[aim]:
+    headers_session.append(sub[1:].split(".")[-1])
+    values_session.append(data[aim+sub].iloc[0] )  
+  return headers_session, values_session
+
 if __name__  == "__main__":   
     path = "data/data.csv"
-    cols =   readRelevantColumns()
-    getRelevantData(path , cols)
+    labelid = "1803291630D0106"
+    h, v  = getSessionInfo(path, labelid)
+    print(h)
+    print(v)
+    
+    
+

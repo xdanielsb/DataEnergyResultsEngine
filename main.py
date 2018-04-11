@@ -12,7 +12,7 @@ import datetime as dt
 from flask import Flask, render_template, request, redirect, url_for
 from werkzeug.utils import secure_filename
 
-from launcher import getLabels
+from launcher import getLabels, getSpecificData, getSessionInfo
 
 UPLOAD_FOLDER = './data/'
 ALLOWED_EXTENSIONS = set(['csv'])
@@ -54,19 +54,22 @@ def browser ():
       """
     return render_template('index.html')
   except Exception as e:
+    print(e)
     return render_template('500.html',error=e)
 
 @app.route('/results/<labelid>')
 def results(labelid):
   global PATH_FILE
   try:
-    #npath = "./data/data.csv"
+    PATH_FILE = "./data/data.csv"
     if(len(labelid) == 0 ):
       return render_template('results.html', path=PATH_FILE)
     else: 
-      
-      return render_template('results.html', path=PATH_FILE)
+      headers, values = getSpecificData(PATH_FILE, labelid)
+      h, v  = getSessionInfo(PATH_FILE, labelid)
+      return render_template('results.html', headers=headers, values=values, header_session=h, values_session=v)
   except Exception as e:
+    print(e)
     return render_template("500.html", error=e)
 
 if __name__ =="__main__":
