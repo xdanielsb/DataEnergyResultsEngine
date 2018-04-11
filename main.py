@@ -40,11 +40,12 @@ def browser ():
         filename = secure_filename(file.filename)
         npath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(npath)
-        return render_template('results.html', name_file=npath)
+        data = pa.read_csv(npath)
+        infoExperiments = getLabels(data)
+        return render_template('index.html', name_file=npath, headers=infoExperiments)
     return render_template('index.html')
   except Exception as e:
     return render_template('500.html',error=e)
-
 
 @app.route('/results/')
 def results():
@@ -52,7 +53,7 @@ def results():
     npath = "./data/data.csv"
     data = pa.read_csv(npath)
     infoExperiments = getLabels(data)
-    return render_template('results.html', name_file=npath, headers=infoExperiments)
+    return render_template('index.html', name_file=npath, headers=infoExperiments)
   except Exception as e:
     return render_template("500.html", error=e)
 
