@@ -1,5 +1,6 @@
 
 # coding: utf-8
+# author of this script Enrique Aldana 
 
 # # Cleaning Energy Game database output (March, 21st, 2018)
 # 
