@@ -7,7 +7,7 @@ Flask-Cors==3.0.3
 Flask-SocketIO==2.9.3
 gevent==1.2.2
 greenlet==0.4.9
-gunicorn==18.0
+gunicorn==19.9.0
 itsdangerous==0.24
 Jinja2==2.10
 MarkupSafe==1.0
